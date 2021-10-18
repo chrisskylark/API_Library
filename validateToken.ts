@@ -29,16 +29,16 @@ import {findUserById} from "./mySQLStore"
 export async function validateToken (token: string, config: ConfigData): Promise<ValidatedToken|null>  {
   let decode: ValidatedToken |null;
   try {
-    // let client = await connectMongo(config.mongoURI);
-    // let users = client.db(config.mongoDB).collection('users-permissions_user');
     decode = <ValidatedToken>jwt.verify(token, config.strapiJWT);
     decode.expiresOn = new Date(decode.exp * 1000);
     decode.issuedOn = new Date(decode.iat * 1000);
     let user =  <ValidatedTokenUser> await  findUserById(decode.id!, ["id","email","username","createdAt", "confirmed", "blocked", "profileType"] )
     decode.user = user;
+    console.log("🔐🔐 Validate Token: Token validated OK with result of %o", decode)
   } catch (e) {
     decode = null;
   }
-  return decode;
+    console.log("🔐🔐 Validate Token: Token supplied could not be validated")
+    return decode;
 };
 module.exports = {validateToken};
