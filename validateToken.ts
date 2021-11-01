@@ -36,9 +36,9 @@ export async function validateToken (token: string, config: ConfigData): Promise
     decode.user = user;
     console.log("🔐🔐 Validate Token: Token validated OK with result of %o", decode)
   } catch (e) {
+    console.log("🔐🔐 Validate Token: Token supplied could not be validated")
     decode = null;
   }
-    console.log("🔐🔐 Validate Token: Token supplied could not be validated")
     return decode;
 };
 module.exports = {validateToken};
