@@ -219,7 +219,7 @@ function deg2rad(deg: number): number {
 
 export function decodeBody(event: any): string {
   let bodyRaw = event.body;
-  let body: string = '';
+  let body: string = event.body;
   let bodyJSON: any;
   if (event.isBase64Encoded) {
     body = Buffer.from(bodyRaw, 'base64').toString('utf8');
