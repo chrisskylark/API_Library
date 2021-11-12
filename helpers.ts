@@ -232,13 +232,26 @@ export function decodeBody(event: any): string {
   }
 }
 export function monthName(month: number): string {
-  let months =  ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
-  if(month < 0 || month > 11) throw new Error("Invalid month number")
-  return months[month]
+  let months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  if (month < 0 || month > 11) throw new Error('Invalid month number');
+  return months[month];
 }
 
 export function shortMonthName(month: number): string {
-  return monthName(month).substring(0,3).toUpperCase();
+  return monthName(month).substring(0, 3).toUpperCase();
 }
 
 export function injectDate(text: string): string {
@@ -249,7 +262,7 @@ export function injectDate(text: string): string {
   text = text.replace(/%sm/g, shortMonthName(timeNow.getMonth()));
   text = text.replace(/%lm/g, monthName(timeNow.getMonth()));
   text = text.replace(/%d/g, pad(timeNow.getDate()));
-  text = text.replace(/%m/g, pad(timeNow.getMonth()+1));
+  text = text.replace(/%m/g, pad(timeNow.getMonth() + 1));
   text = text.replace(/%y/g, pad(timeNow.getFullYear()));
   text = text.replace(/%h/g, pad(timeNow.getHours()));
   text = text.replace(/%n/g, pad(timeNow.getMinutes()));
@@ -258,5 +271,42 @@ export function injectDate(text: string): string {
 
   return text;
 }
+
+export const gatewayevent = {
+  version: '2.0',
+  rawQueryString: '',
+  headers: {
+    accept: '*/*',
+    'accept-encoding': 'gzip,deflate,br',
+    authorization:
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTg4OCwiaWF0IjoxNjM1NDMyMzQxLCJleHAiOjE2MzgwMjQzNDF9.Y0aEY5UZ6hJJfK9xqqEWwHr84BM8jzqJ1Paw6zzu9Gg',
+    'content-length': '885',
+    'content-type': 'application/jwt',
+    host: '1db5wfkr9g.execute-api.eu-west-2.amazonaws.com',
+    'user-agent': 'node-fetch',
+    'x-amzn-trace-id': 'Root=1-617abd04-2a68e8cf0bbff9a44cf9c811',
+    'x-forwarded-for': '82.31.1.88',
+    'x-forwarded-port': '443',
+    'x-forwarded-proto': 'https',
+  },
+  requestContext: {
+    accountId: '072444354828',
+    apiId: '1db5wfkr9g',
+    domainName: '1db5wfkr9g.execute-api.eu-west-2.amazonaws.com',
+    domainPrefix: '1db5wfkr9g',
+    http: {
+      method: 'POST',
+      path: '/dev/coins/purchase',
+      protocol: 'HTTP/1.1',
+      sourceIp: '82.31.1.88',
+      userAgent: 'node-fetch',
+    },
+    stage: 'dev',
+    time: '28/Oct/2021:15:08:52 +0000',
+    timeEpoch: 1635433732997,
+  },
+  body: '',
+  isBase64Encoded: false,
+};
 
 export {getConfig};

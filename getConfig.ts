@@ -9,7 +9,7 @@ let CONFIG: any = null;
 export type StrapiToken = {
   jwt: string;
   createdOn: Date;
-}
+};
 export type MySQLConnectInfo = {
   host: string;
   user: string;
@@ -44,6 +44,8 @@ export type ConfigData = {
   mysqlStore?: MySQLStore;
   MoneyHubAPI?: APIApp;
   companiesHouseApiKey?: string;
+  charitybaseApiKey: string;
+  charitybaseEndpoint: string;
 };
 
 export async function getConfig(): Promise<ConfigData | null> {
@@ -65,14 +67,13 @@ export async function getConfig(): Promise<ConfigData | null> {
   }
 }
 
-
 export async function putConfig(newConfig: ConfigData): Promise<boolean> {
   console.log('Putting Config');
   try {
     let params: AWS.S3.PutObjectRequest = {
       Bucket: S3_BUCKET,
       Key: S3_PREFIX + `/${pk.config.s3configFile}`,
-      Body: JSON.stringify(newConfig)
+      Body: JSON.stringify(newConfig),
     };
     let config: any = await s3.putObject(params).promise();
     CONFIG = _.cloneDeep(config);
@@ -81,4 +82,3 @@ export async function putConfig(newConfig: ConfigData): Promise<boolean> {
     return false;
   }
 }
-

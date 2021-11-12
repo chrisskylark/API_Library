@@ -81,8 +81,13 @@ export type PostcodeRecord = {
 };
 
 export async function mySQLTableExists(table: string): Promise<boolean> {
+  const config = await getConfig();
   const mysql = await getMySQLClient();
-  const [db, tab] = table.replace(/`/g, '').split('.');
+  let [db, tab] = table.replace(/`/g, '').split('.');
+  if(db && !tab && config && config.mysql && config.mysql.database) {
+    tab = db;
+    db = config.mysql.database
+  }
   if (!db || !tab) throw new Error('mySQLTableExists --> Error must supply table as database.table');
   if (!mysql) throw new Error('storeHasStore: -> Cannot get mysql connection');
   const query = 'SELECT COUNT(*) AS count FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;';
@@ -368,10 +373,10 @@ export async function storeGetAllWithEvents(): Promise<
 // --------------------------------------------------------------------------
 
 export async function emailstoreEnsureTable(): Promise<boolean> {
-  let exists = mySQLTableExists('wunder.email_store');
+  let exists = await mySQLTableExists('email_store');
   if (!exists) {
     // create the email store
-    const query = `CREATE TABLE wunder.email_store (
+    const query = `CREATE TABLE email_store (
       id int unsigned NOT NULL AUTO_INCREMENT,
       sent DATETIME, 
       email varchar(255),
@@ -388,7 +393,7 @@ export async function emailstoreEnsureTable(): Promise<boolean> {
     console.log(query);
     let res = await runSQL(query);
   }
-  return mySQLTableExists('wunder.email_store');
+  return mySQLTableExists('email_store');
 }
 
 export async function emailstorePut(emailLog: any): Promise<boolean> {
@@ -407,7 +412,7 @@ export async function emailstorePut(emailLog: any): Promise<boolean> {
   };
   try {
     let data = {...emailRecord, ..._.pick(emailLog, Object.keys(emailRecord))};
-    let query = 'INSERT INTO wunder.email_store SET ?';
+    let query = 'INSERT INTO email_store SET ?';
     let res = mysql.query(query, data);
     return true;
   } catch (error) {

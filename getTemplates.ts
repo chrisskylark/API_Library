@@ -2,7 +2,7 @@ import {runSQL} from './mySQLStore';
 import fetch from 'node-fetch';
 
 export async function getTemplates(): Promise<any[]> {
-  const query = "SELECT * FROM wunder.upload_file  WHERE ext = '.html' AND alternativeText = 'email_template';";
+  const query = "SELECT * FROM upload_file  WHERE ext = '.html' AND alternativeText = 'email_template';";
   try {
     let templates = await runSQL(query)
     templates = templates && !Array.isArray(templates) ? [templates] : templates
@@ -13,7 +13,7 @@ export async function getTemplates(): Promise<any[]> {
 }
 
 export async function hasTemplate(templateName: string): Promise<number> {
-  const query = `SELECT * FROM wunder.upload_file  WHERE name = '${templateName}' AND ext = '.html' AND alternativeText = 'email_template';`;
+  const query = `SELECT * FROM upload_file  WHERE name = '${templateName}' AND ext = '.html' AND alternativeText = 'email_template';`;
 
   try {
     let template = await runSQL(query)
